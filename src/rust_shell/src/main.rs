@@ -13,7 +13,10 @@ fn main() {
         io::stdin().read_line(&mut number).expect("Failed to get the input!");
 
         // Shadowing the variable named number
-        let number: u32 = number.trim().parse().expect("Input must be a number!");
+        let number: u32 = match number.trim().parse() {
+            Ok(integer) => integer,
+            Err(_) => continue,
+        };
 
         match number.cmp(&secret_number) {
             Ordering::Less => println!("Too small!"),
@@ -24,7 +27,7 @@ fn main() {
             }
         }
 
-        println!("You guessed: {} and it was: {}", number, secret_number);
+        println!("You guessed: {}", number);
     }
 }
 
