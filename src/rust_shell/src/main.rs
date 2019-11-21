@@ -52,9 +52,7 @@ fn takes_and_gives_back(spatial_reference_name: String) -> String { // spatial_r
     spatial_reference_name
 }
 
-
-
-fn main() {
+fn understanding_ownership() {
     // spatial_reference_name comes into scope
     let spatial_reference_name = String::from("WGS84");
 
@@ -84,8 +82,48 @@ fn main() {
     // spatial_reference_name is moved into takes_and_gives_back,
     // which also moves its return value into spatial_reference_name_moved
     let spatial_reference_name_moved = takes_and_gives_back(spatial_reference_name_new);
-
 }   // Here, spatial_reference_name_moved goes out of scope and is dropped.
     // spatial_reference_name_new goes out of scope but was moved, so nothing happens.
     // spatial_reference_name goies out of scope and is dropped.
+
+fn use_borrowed(spatial_reference_name: &String) -> i32 { // spatial_reference_name is a reference to a String
+    match spatial_reference_name.as_ref() {
+        "WGS84" => 4326,
+        _ => 0,
+    }
+} // Here, spatial_reference_name goes out of scope. But because it does not have ownership of what it refers to, nothing happens.
+
+fn change_borrowed(spatial_reference_name: &mut String) -> i32 {
+    match spatial_reference_name.as_ref() {
+        "WGS84" => 4326,
+        "" => { spatial_reference_name.push_str("WGS84"); 4326 }
+        _ => 0,
+    }
+}
+
+
+
+fn main() {
+    // spatial_reference_name comes into scope
+    let spatial_reference_name = String::from("WGS84");
+
+    // pass a reference to spatial_reference_name into use_borrowed
+    // a reference refers to the value of spatial_reference_name but does not own it.
+    // because it does not own it, the value it points to will not be dropped when the reference goes out of scope.
+    let wkid = use_borrowed(&spatial_reference_name);
+
+    // wkid would move into function,
+    // but i32 is Copy, so it is okay to still use wkid afterward.
+    makes_copy(wkid);
+
+    // mutable empty_name comes into scope
+    // the mutable reference &mut empty_name is passed into change_borrowed
+    let mut empty_name = String::from("");
+    let wkid = change_borrowed(&mut empty_name);
+    // here, empty_name was changed
+
+    // wkid would move into function,
+    // but i32 is Copy, so it is okay to still use wkid afterward.
+    makes_copy(wkid);
+}
 
