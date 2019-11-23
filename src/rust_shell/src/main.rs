@@ -101,9 +101,7 @@ fn change_borrowed(spatial_reference_name: &mut String) -> i32 {
     }
 }
 
-
-
-fn main() {
+fn references_and_borrowing() {
     // spatial_reference_name comes into scope
     let spatial_reference_name = String::from("WGS84");
 
@@ -125,5 +123,41 @@ fn main() {
     // wkid would move into function,
     // but i32 is Copy, so it is okay to still use wkid afterward.
     makes_copy(wkid);
+}
+
+fn before_the_hash(text: &str) -> &str {
+    let bytes = text.as_bytes();
+    for (index, &byte) in bytes.iter().enumerate() {
+        if b'#' == byte {
+            return &text[..index];
+        }
+    }
+
+    ""
+}
+
+fn after_the_hash(text: &str) -> &str {
+    let bytes = text.as_bytes();
+    for (index, &byte) in bytes.iter().enumerate() {
+        if b'#' == byte {
+            return &text[index+1..];
+        }
+    }
+
+    ""
+}
+
+
+fn the_slice_type() {
+    let topic = "Stay away of:#hashtags!";
+    let prefix = before_the_hash(&topic);
+    let suffix = after_the_hash(&topic);
+    println!("{} {}", prefix, suffix);
+}
+
+
+
+fn main() {
+    the_slice_type();
 }
 
