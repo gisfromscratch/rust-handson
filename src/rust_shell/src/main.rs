@@ -126,6 +126,7 @@ fn references_and_borrowing() {
 }
 
 fn before_the_hash(text: &str) -> &str {
+    // returns the string slice before the hash character
     let bytes = text.as_bytes();
     for (index, &byte) in bytes.iter().enumerate() {
         if b'#' == byte {
@@ -137,6 +138,7 @@ fn before_the_hash(text: &str) -> &str {
 }
 
 fn after_the_hash(text: &str) -> &str {
+    // returns the string slice after the hash character
     let bytes = text.as_bytes();
     for (index, &byte) in bytes.iter().enumerate() {
         if b'#' == byte {
