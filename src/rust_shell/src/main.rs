@@ -159,7 +159,58 @@ fn the_slice_type() {
 
 
 
+struct Point2d {
+    // defines a location in a two dimensional space
+    x: f64,
+    y: f64,
+    wkid: i32
+}
+
+fn create_wgs84_point(latitude: f64, longitude: f64) -> Point2d {
+    // creates a WGS84 point using two coordinates
+    let location = Point2d {
+        x: longitude,
+        y: latitude,
+        wkid: 4326
+    };
+    return location;
+}
+
+fn create_point(x: f64, y: f64, wkid: i32) -> Point2d {
+    // create a point using field init shorthand
+    // parameters have same name as struct fields
+    Point2d {
+        x,
+        y,
+        wkid
+    }
+}
+
+fn copy_point(source_point: Point2d) -> Point2d {
+    // create a deep copy using all the struct fields with .. shorthand
+    Point2d {
+        ..source_point
+    }
+}
+
+fn defining_and_instantiating_structs() {
+    let location = create_wgs84_point(51.83604, 12.24283);
+    println!("{} {} {}", location.x, location.y, location.wkid);
+
+    let location = create_point(12.24283, 51.83604, location.wkid);
+    println!("{} {} {}", location.x, location.y, location.wkid);
+
+    let location = copy_point(location);
+    println!("{} {} {}", location.x, location.y, location.wkid);
+
+    // create a simple tuple struct
+    struct Location(f64, f64, i32);
+    let dessau = Location(location.x, location.y, location.wkid);
+    println!("{} {} {}", dessau.0, dessau.1, dessau.2);
+}
+
+
 fn main() {
-    the_slice_type();
+    defining_and_instantiating_structs();
 }
 
