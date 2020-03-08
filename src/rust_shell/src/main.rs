@@ -159,6 +159,7 @@ fn the_slice_type() {
 
 
 
+#[derive(Debug)]
 struct Point2d {
     // defines a location in a two dimensional space
     x: f64,
@@ -193,6 +194,33 @@ fn copy_point(source_point: Point2d) -> Point2d {
     }
 }
 
+
+
+#[derive(Debug)]
+struct NamedLocation {
+    // defines a simple named location
+    name: String,
+    location: Point2d
+}
+
+impl NamedLocation {
+    // defines the methods which can be used with a NamedLocation
+    // you should put all the things you can do with an instance of a type in one impl block
+    
+    fn is_upper_hemisphere(&self) -> bool {
+        match self.location.wkid {
+            4326 => 0.0 < self.location.y,
+            _ => false
+        }
+    }
+
+    fn has_same_name(&self, other: &NamedLocation) -> bool {
+        return self.name == other.name;
+    }
+}
+
+
+
 fn defining_and_instantiating_structs() {
     let location = create_wgs84_point(51.83604, 12.24283);
     println!("{} {} {}", location.x, location.y, location.wkid);
@@ -212,7 +240,22 @@ fn defining_and_instantiating_structs() {
     // print the point using the output format "Debug" by using ":?"
     // this only works if you annotate the struct with #[derive(Debug)]
     println!("Location is: {:?}", dessau);
+
+    let dessau_location = NamedLocation {
+        name: String::from("Dessau"),
+        location: location
+    };
+
+    println!("{} is on upper hemisphere? {}", dessau_location.name, dessau_location.is_upper_hemisphere());
+
+    let bonn_location = NamedLocation {
+        name: String::from("Bonn"),
+        location: create_wgs84_point(50.7343800, 7.0954900)
+    };
+
+    println!("{:?} has the same name like {:?}? {}", dessau_location, bonn_location, dessau_location.has_same_name(&bonn_location));
 }
+
 
 
 fn main() {
