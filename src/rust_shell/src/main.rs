@@ -268,7 +268,88 @@ fn defining_and_instantiating_structs() {
 
 
 
+#[derive(Debug)]
+struct SpatialReference {
+    // create a simple struct
+    name: String,
+    wkid: i32
+}
+
+impl SpatialReference {
+    // create implementations for the SpatialReference struct
+
+    fn create_wgs84() -> SpatialReference {
+        SpatialReference {
+            name: String::from("WGS84"),
+            wkid: 4326
+        }
+    }
+}
+
+#[derive(Debug)]
+enum WellKnownSpatialReference {
+    // define an WellKnonwSpatialReference enum having different types like None, SpatialReference and String
+
+    Unknown,
+    WGS84(SpatialReference),
+    WebMercator(String)
+}
+
+impl WellKnownSpatialReference {
+    // create implementations for the WellKnownSpatialReference enum
+    
+    fn wkid(&self) -> Option<i32> {
+        // returns the wkid only for WellKnownSpatialReference enums having a SpatialReference instance
+        // all other enums return None
+        match &self {
+            WellKnownSpatialReference::WGS84(spatial_reference) => Some(spatial_reference.wkid),
+            _ => None
+        }
+    }
+    
+    fn has_wkid(&self) -> bool {
+        // returns true only if the enum is WellKnownSpatialReference::WGS84
+        match &self {
+            WellKnownSpatialReference::WGS84(_) => true,
+            _ => false
+        }
+    }
+}
+
+fn print_wkid(wellknown_spatial_reference : &WellKnownSpatialReference) {
+    // prints whether or not the WellKnownSpatialReference has a wkid
+    println!("{:?} has wkid? {}", wellknown_spatial_reference, wellknown_spatial_reference.has_wkid());
+    
+    // gets the wkid option and only prints the wkid if some wkid was returned
+    let wkid_option = wellknown_spatial_reference.wkid();
+    match wkid_option {
+        Some(wkid) => println!("WKID is: {0}", wkid),
+        _ => {}
+    }
+}
+
+fn defining_an_enum() {
+    // create the WGS84 spatial reference
+    let wgs84 = SpatialReference::create_wgs84();
+
+    // define the world geodetic system as well known by using the WGS84 spatial reference
+    let world_geodetic_system = WellKnownSpatialReference::WGS84(wgs84);
+
+    // define the web mercator system as well known by only using a String
+    let web_mercator_system = WellKnownSpatialReference::WebMercator(String::from("WebMercator"));
+
+    // define nonsense
+    let pumuckl = WellKnownSpatialReference::Unknown;
+
+    // use the has_wkid method on all defined enums
+    print_wkid(&world_geodetic_system);
+    print_wkid(&web_mercator_system);
+    print_wkid(&pumuckl);
+}
+
+
+
 fn main() {
-    defining_and_instantiating_structs();
+    defining_an_enum();
 }
 
