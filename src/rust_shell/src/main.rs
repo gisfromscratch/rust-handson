@@ -356,7 +356,6 @@ fn defining_an_enum() {
 
 
 fn main() {
-    // Seems to work
     defining_an_enum();
 }
 
