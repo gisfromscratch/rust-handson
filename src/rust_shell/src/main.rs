@@ -217,6 +217,23 @@ impl NamedLocation {
     fn has_same_name(&self, other: &NamedLocation) -> bool {
         return self.name == other.name;
     }
+
+    // associated functions are often used for construction that will create a new instance of the struct
+    fn create_dessau() -> NamedLocation {
+        // creates a new named location using the coordinates of Dessau
+        NamedLocation {
+            name: String::from("Dessau"),
+            location: create_wgs84_point(51.83604, 12.24283)
+        }
+    }
+
+    fn create_bonn() -> NamedLocation {
+        // creates a new named location using the coordinates of Bonn
+        NamedLocation {
+            name: String::from("Bonn"),
+            location: create_wgs84_point(50.7343800, 7.0954900)
+        }
+    }
 }
 
 
@@ -241,18 +258,11 @@ fn defining_and_instantiating_structs() {
     // this only works if you annotate the struct with #[derive(Debug)]
     println!("Location is: {:?}", dessau);
 
-    let dessau_location = NamedLocation {
-        name: String::from("Dessau"),
-        location: location
-    };
-
+    // Use the associated function for creating a new instance
+    let dessau_location = NamedLocation::create_dessau();
     println!("{} is on upper hemisphere? {}", dessau_location.name, dessau_location.is_upper_hemisphere());
 
-    let bonn_location = NamedLocation {
-        name: String::from("Bonn"),
-        location: create_wgs84_point(50.7343800, 7.0954900)
-    };
-
+    let bonn_location = NamedLocation::create_bonn();
     println!("{:?} has the same name like {:?}? {}", dessau_location, bonn_location, dessau_location.has_same_name(&bonn_location));
 }
 
