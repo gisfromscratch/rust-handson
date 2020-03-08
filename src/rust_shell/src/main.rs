@@ -324,7 +324,7 @@ fn print_wkid(wellknown_spatial_reference : &WellKnownSpatialReference) {
     let wkid_option = wellknown_spatial_reference.wkid();
     match wkid_option {
         Some(wkid) => println!("WKID is: {0}", wkid),
-        _ => {}
+        _ => ()
     }
 }
 
