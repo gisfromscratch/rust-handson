@@ -326,6 +326,12 @@ fn print_wkid(wellknown_spatial_reference : &WellKnownSpatialReference) {
         Some(wkid) => println!("WKID is: {0}", wkid),
         _ => ()
     }
+
+    // using "if let" when matching only one pattern
+    // "if let" is not that verbose like "match"
+    if let Some(4326) = wkid_option {
+        println!("The world geodetic system strikes back again!");
+    }
 }
 
 fn defining_an_enum() {
