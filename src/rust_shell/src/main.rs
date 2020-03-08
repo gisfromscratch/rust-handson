@@ -204,9 +204,14 @@ fn defining_and_instantiating_structs() {
     println!("{} {} {}", location.x, location.y, location.wkid);
 
     // create a simple tuple struct
+    #[derive(Debug)]
     struct Location(f64, f64, i32);
     let dessau = Location(location.x, location.y, location.wkid);
     println!("{} {} {}", dessau.0, dessau.1, dessau.2);
+
+    // print the point using the output format "Debug" by using ":?"
+    // this only works if you annotate the struct with #[derive(Debug)]
+    println!("Location is: {:?}", dessau);
 }
 
 
